@@ -11,11 +11,10 @@ import com.pizango.denunciaservice.exceptions.NoDataFoundException;
 import com.pizango.denunciaservice.exceptions.ValidateServiceException;
 import com.pizango.denunciaservice.repository.DenunciaRepository;
 import com.pizango.denunciaservice.service.DenunciaService;
-import com.pizango.denunciaservice.validator.DenunciaValidator;
 
-import lombok.extern.slf4j.Slf4j;
+//import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
+
 @Service
 public class DenunciaServiceImpl implements DenunciaService{
 
@@ -28,10 +27,10 @@ public class DenunciaServiceImpl implements DenunciaService{
 		try {
 			return repository.findAll(page).toList();
 		}catch(NoDataFoundException e){
-			log.info(e.getMessage(),e);
+			//log.info(e.getMessage(),e);
 			throw e;
 		}catch(Exception e){
-			log.error(e.getMessage(),e);
+			//log.error(e.getMessage(),e);
 			throw new GeneralServiceException(e.getMessage(),e);
 		}
 	}
@@ -42,10 +41,10 @@ public class DenunciaServiceImpl implements DenunciaService{
 		try {
 			return repository.findByDniContaining(dni, page);
 		}catch(ValidateServiceException | NoDataFoundException e){
-			log.info(e.getMessage(),e);
+			//log.info(e.getMessage(),e);
 			throw e;
 		}catch(Exception e){
-			log.error(e.getMessage(),e);
+			//log.error(e.getMessage(),e);
 			throw new GeneralServiceException(e.getMessage(),e);
 		}
 	}
@@ -57,10 +56,10 @@ public class DenunciaServiceImpl implements DenunciaService{
 			Denuncia registro=repository.findById(id).orElseThrow(()->new NoDataFoundException("No existe el regisro con ese ID"));
 			return registro;
 		}catch(ValidateServiceException | NoDataFoundException e){
-			log.info(e.getMessage(),e);
+			//log.info(e.getMessage(),e);
 			throw e;
 		}catch(Exception e){
-			log.error(e.getMessage(),e);
+			//log.error(e.getMessage(),e);
 			throw new GeneralServiceException(e.getMessage(),e);
 		}
 	}
@@ -69,7 +68,7 @@ public class DenunciaServiceImpl implements DenunciaService{
 	@Transactional
 	public Denuncia save(Denuncia infraccion) {
 		try {
-			DenunciaValidator.save(infraccion);
+			save(infraccion);
 			if(repository.findByDni(infraccion.getDni())!=null) {
 				throw new ValidateServiceException("Ya existe un registro con ese numero de documento " +infraccion.getDni());
 			}
@@ -88,7 +87,7 @@ public class DenunciaServiceImpl implements DenunciaService{
 	@Transactional
 	public Denuncia update(Denuncia denuncia) {
 		try {
-			DenunciaValidator.save(denuncia);
+			save(denuncia);
 			Denuncia registro=repository.findById(denuncia.getId()).orElseThrow(()->new NoDataFoundException("No existe el regisro con ese ID"));
 			Denuncia registroD=repository.findByDni(denuncia.getDni());
 			if(registroD!=null && registroD.getId()!=denuncia.getId()) {
@@ -102,10 +101,10 @@ public class DenunciaServiceImpl implements DenunciaService{
 			repository.save(registro);
 			return registro;
 		}catch(ValidateServiceException | NoDataFoundException e){
-			log.info(e.getMessage(),e);
+			//log.info(e.getMessage(),e);
 			throw e;
 		}catch(Exception e){
-			log.error(e.getMessage(),e);
+			//log.error(e.getMessage(),e);
 			throw new GeneralServiceException(e.getMessage(),e);
 		}
 	}
@@ -117,10 +116,10 @@ public class DenunciaServiceImpl implements DenunciaService{
 			Denuncia registro=repository.findById(id).orElseThrow(()->new NoDataFoundException("No existe el regisro con ese ID"));
 			repository.delete(registro);
 		}catch(ValidateServiceException | NoDataFoundException e){
-			log.info(e.getMessage(),e);
+			//log.info(e.getMessage(),e);
 			throw e;
 		}catch(Exception e){
-			log.error(e.getMessage(),e);
+			//log.error(e.getMessage(),e);
 			throw new GeneralServiceException(e.getMessage(),e);
 		}
 		
